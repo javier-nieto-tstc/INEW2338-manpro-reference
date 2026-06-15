@@ -20,6 +20,10 @@
         p { margin: 0; color: #64748b; font-size: 15px; }
         .ok { margin-top: 22px; display: inline-block; background: #dcfce7; color: #15803d;
               font-weight: 700; font-size: 13px; padding: 7px 16px; border-radius: 999px; }
+        .customers { margin-top: 26px; text-align: left; }
+        .customers h2 { font-size: 16px; margin: 0 0 10px; color: #0f172a; }
+        .customers ul { margin: 0; padding-left: 20px; color: #334155; font-size: 15px; }
+        .customers li { margin: 4px 0; }
     </style>
 </head>
 <body>
@@ -29,6 +33,33 @@
         <p class="tag">Maintenance done right.</p>
         <p>Your Business Command Center — built one module at a time.</p>
         <span class="ok">✓ It works! Your app is running on the web.</span>
+
+        <div class="customers">
+            <h2>Customers</h2>
+            <!-- The script below fills this list after the page loads. -->
+            <ul id="customerList">
+                <li>Loading…</li>
+            </ul>
+        </div>
     </div>
+
+    <script>
+        // Ask the server for the customers (the JSON from /api/customers).
+        fetch("/api/customers")
+            .then(function (response) {
+                return response.json();   // turn the JSON text into JS objects
+            })
+            .then(function (customers) {
+                var list = document.getElementById("customerList");
+                list.innerHTML = "";      // clear the "Loading…" item
+
+                // Walk through each customer and add their name to the page.
+                for (var i = 0; i < customers.length; i++) {
+                    var item = document.createElement("li");
+                    item.textContent = customers[i].name;
+                    list.appendChild(item);
+                }
+            });
+    </script>
 </body>
 </html>
